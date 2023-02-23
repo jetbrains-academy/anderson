@@ -8,7 +8,7 @@ gif_config:
     - name: 'light'
       theme: 'solarized_light'
 
-script:
+scenario:
   # Wait for the first message and wait 1.5 seconds to read the message
   - expect: \n
   - wait: 1500
