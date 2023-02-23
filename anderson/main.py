@@ -1,9 +1,10 @@
 import argparse
 import logging
+import os
 import sys
 from contextlib import contextmanager
 from pathlib import Path
-from tempfile import NamedTemporaryFile
+from tempfile import NamedTemporaryFile, mkstemp
 from typing import List
 
 from asciinema_automation.script import Script
@@ -37,11 +38,16 @@ def create_scenario_file(scenario: List[Action]) -> Path:
     :return: Path to an asciinema_automation scenario file.
     """
     logger.info('Creating the scenario file.')
-    with NamedTemporaryFile(mode='w', suffix='.sh') as scenario_file:
+
+    _, scenario_path = mkstemp(suffix='.sh', text=True)
+    with open(scenario_path, 'w') as scenario_file:
         for action in scenario:
             scenario_file.write(f'{action.to_bash_command()}\n')
 
-        yield Path(scenario_file.name)
+    try:
+        yield Path(scenario_path)
+    finally:
+        os.remove(scenario_path)
 
 
 def create_gif_generation_command(cast_file: Path, output_dir: Path, gif: Gif) -> List[str]:
