@@ -15,7 +15,7 @@ class TerminalConfig(BaseModel):
 class InteractionConfig(BaseModel):
     keystroke_delay: PositiveInt = 150
     keystroke_std: PositiveInt = 60
-    instruction_delay: PositiveInt = 80
+    action_delay: PositiveInt = 80
 
 
 class Gif(BaseModel):
@@ -71,4 +71,4 @@ class Config(BaseModel):
     terminal_config: TerminalConfig = TerminalConfig()
     interaction_config: InteractionConfig = InteractionConfig()
     gif_config: GifConfig
-    script: conlist(ActionType, min_items=1)
+    scenario: conlist(ActionType, min_items=1)

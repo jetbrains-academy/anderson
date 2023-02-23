@@ -27,21 +27,21 @@ def configure_parser(parser: argparse.ArgumentParser) -> None:
 
 
 @contextmanager
-def create_script_file(script: List[Action]) -> Path:
+def create_scenario_file(scenario: List[Action]) -> Path:
     """
     Write the list of actions to a temporary bash file in an asciinema_automation format and yield its path.
 
     This function must be used as a context manager. On exit, the temporary file will be deleted.
 
-    :param script: List of actions.
-    :return: Path to an asciinema_automation script file.
+    :param scenario: List of actions.
+    :return: Path to an asciinema_automation scenario file.
     """
-    logger.info('Creating the script file.')
-    with NamedTemporaryFile(mode='w', suffix='.sh') as script_file:
-        for command in script:
-            script_file.write(f'{command.to_bash_command()}\n')
+    logger.info('Creating the scenario file.')
+    with NamedTemporaryFile(mode='w', suffix='.sh') as scenario_file:
+        for action in scenario:
+            scenario_file.write(f'{action.to_bash_command()}\n')
 
-        yield Path(script_file.name)
+        yield Path(scenario_file.name)
 
 
 def create_gif_generation_command(cast_file: Path, output_dir: Path, gif: Gif) -> List[str]:
@@ -99,19 +99,19 @@ def main() -> int:
         logger.error(e)
         return 1
 
-    script = config.script
+    scenario = config.scenario
     terminal_config = config.terminal_config
     interaction_config = config.interaction_config
     gif_config = config.gif_config
 
     with NamedTemporaryFile(suffix='.cast') as cast_file:
-        with create_script_file(script) as script_path:
+        with create_scenario_file(scenario) as scenario_path:
             logger.info('Recording the executable.')
             Script(
-                script_path,
+                scenario_path,
                 Path(cast_file.name),
                 f'-c "{args.executable}" --cols {terminal_config.cols} --rows {terminal_config.rows}',
-                wait=interaction_config.instruction_delay,
+                wait=interaction_config.action_delay,
                 delay=interaction_config.keystroke_delay,
                 standart_deviation=interaction_config.keystroke_std,
             ).execute()
