@@ -4,8 +4,6 @@ max-line-length=120
 strictness=long
 docstring_style=sphinx
 
-application-import-names=src
-
 ignore=WPS100, # Found wrong module name
        WPS110, # Found wrong variable name
        WPS111, # Found too short name
@@ -34,6 +32,8 @@ ignore=WPS100, # Found wrong module name
        E402, # Module level import not at top of file.
 
 # WPS226: Found string literal over-use
-per-file-ignores=src/config/choices.py:WPS226
+per-file-ignores=anderson/config/choices.py:WPS226
+
+application-import-names=anderson
 
 exclude=.venv,venv,test,examples
