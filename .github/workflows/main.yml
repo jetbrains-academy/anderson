@@ -61,8 +61,8 @@ jobs:
       - name: Install anderson
         run: pip install .
         
-      - name: Chack anderson is working
-        run: anderson "python3 ./examples/python_bot/main.py" ./examples/python_bot/out/ ./examples/python_bot/config.yaml
+      - name: Check anderson is working
+        run: anderson "python3 ./examples/python_bot/main.py" ./examples/python_bot/out/ ./examples/python_bot/config.yaml --debug
       
       - uses: actions/upload-artifact@v3
         with:
