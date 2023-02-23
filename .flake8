@@ -1,0 +1,39 @@
+[flake8]
+max-line-length=120
+
+strictness=long
+docstring_style=sphinx
+
+application-import-names=src
+
+ignore=WPS100, # Found wrong module name
+       WPS110, # Found wrong variable name
+       WPS111, # Found too short name
+       WPS115, # Found upper-case constant in a class. Disabled due to false positive results in enums.
+       WPS201, # Found module with too many imports
+       WPS210, # Found too many local variables
+       WPS221, # Found line with high Jones Complexity
+       WPS237, # Found a too complex `f` string
+       WPS305, # Found `f` string
+       WPS323, # Found `%` string formatting
+       WPS473, # Found too many empty lines
+       I00, # We use flake8-import-order (I1, I2) to sort the imports
+       D1, # Missing Docstrings
+       DAR003, # Incorrect indentation. Disabled due to false positive results.
+       DAR202, # Excess "Returns" in Docstring. Disabled due to false positive results.
+       DAR301, # Missing "Yields" in Docstring: - yield. Disabled due to false positive results.
+       RST206, # Field list ends without a blank line; unexpected unindent. Disabled due to false positive results.
+       W503, # Line break occurred before a binary operator. According to PEP8 the line break must come before the binary operator.
+       RST301, # Unexpected indentation (in docstring).
+       S101, # Use of assert detected.
+       S404, # Consider possible security implications associated with the subprocess module.
+       S603, # Check for execution of untrusted input.
+       P101, # Format string does contain unindexed parameters.
+       P102, # Docstring does contain unindexed parameters.
+       P103, # Other string does contain unindexed parameters.
+       E402, # Module level import not at top of file.
+
+# WPS226: Found string literal over-use
+per-file-ignores=src/config/choices.py:WPS226
+
+exclude=.venv,venv,test,examples
