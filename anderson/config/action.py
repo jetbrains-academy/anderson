@@ -5,20 +5,20 @@ from pydantic import BaseModel, PositiveInt
 
 
 class Action(BaseModel, ABC):
-    """An abstract dataclass class for a script action."""
+    """Abstract dataclass class for a scenario action."""
 
     @abstractmethod
     def to_bash_command(self) -> str:
         """
         Convert the action into an asciinema_automation bash command.
 
-        :return: An asciinema_automation bash command.
+        :return: asciinema_automation bash command.
         """
         raise NotImplementedError
 
 
 class EnterAction(Action):
-    """An action that enters some symbols."""
+    """Action that enters some symbols."""
 
     enter: str
 
@@ -27,7 +27,7 @@ class EnterAction(Action):
 
 
 class ExpectAction(Action):
-    """An action that waits for some symbols."""
+    """Action that waits for some symbols."""
 
     expect: str
 
@@ -36,7 +36,7 @@ class ExpectAction(Action):
 
 
 class WaitAction(Action):
-    """An action that waits a number of seconds."""
+    """Action that waits a number of seconds."""
 
     wait: PositiveInt
 
@@ -45,7 +45,7 @@ class WaitAction(Action):
 
 
 class DelayAction(Action):
-    """An action that sets delay between keystrokes."""
+    """Action that sets delay between keystrokes."""
 
     delay: PositiveInt
 
