@@ -33,7 +33,7 @@ Examples of using the tool are presented in the corresponding [folder](examples)
 
 ### Config
 
-The config consists of 4 fields:
+The config file is a yaml file with 4 fields:
 - `terminal_config` – Arguments related to the terminal where automatic interaction takes place. 
   They are passed to `ascicinema`. This field is optional.
 - `interaction_config` – Arguments related to automatic interaction with the terminal. 
@@ -46,10 +46,33 @@ The `terminal_config` contains the following arguments:
 - `rows` – Terminal rows. By default: `24`.
 
 The `interaction_config` contains the following arguments:
-- `keystroke_delay` – Delay between each keystroke (in milliseconds). Be default, `150`.
-- `keystroke_std` – Standard deviation for the `keystroke_delay` (in milliseconds). Be default, `60`.
-- `action_delay` – Delay between each action (in milliseconds). Be default, `80`.
+- `keystroke_delay` – Delay between each keystroke (in milliseconds). By default, `150`.
+- `keystroke_std` – Standard deviation for the `keystroke_delay` (in milliseconds). By default, `60`.
+- `action_delay` – Delay between each action (in milliseconds). By default, `80`.
 
+The `gif_config` contains the following fields:
+- `gifs` – List of arguments for each of the GIFs you want to generate.
+- `common` – Common arguments that need to be applied when generating each of the GIFs.
+
+**Note**: the arguments specified in the `common` have a lower priority 
+than the arguments specified for each specific GIF.
+
+The `gifs` list item consists of the following arguments:
+- `name` – Name of the GIF. In the file with this name the GIF will be saved.
+- `theme` – Either the name of the built-in theme or a list of colors in hexadecimal format.
+  The names of the available themes are listed in the `Theme` enum-class located [here](anderson/config/choices.py).
+  More information about the list of colors can be found [here](https://github.com/asciinema/agg#color-themes).
+  By default, `dracula`.
+- `font_family` – The name of the font family. The available values are given in the `FontFamily` enum-class located 
+  [here](anderson/config/choices.py). **Note**: the selected font family must be installed on your system.
+  By default, `Liberation Mono`.
+- `font_size` – Font size (in pixels). By default, `14`.
+- `fps_cap` – FPS cap. By default, `30`.
+- `line_height` – Line height. By default, `1.4`.
+- `speed` – Playback speed. By default, `1`.
+- `no_loop` – Disable animation loop. By default, `false`.
+
+Examples of config files you can see in the [`examples`](examples) folder.
 
 ## License
 
