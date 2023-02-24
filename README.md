@@ -63,7 +63,7 @@ The `gifs` list item consists of the following arguments:
   The names of the available themes are listed in the `Theme` enum-class located [here](anderson/config/choices.py).
   More information about the list of colors can be found [here](https://github.com/asciinema/agg#color-themes).
   By default, `dracula`.
-- `font_family` – The name of the font family. The available values are given in the `FontFamily` enum-class located 
+- `font_family` – Name of the font family. The available values are given in the `FontFamily` enum-class located 
   [here](anderson/config/choices.py). **Note**: the selected font family must be installed on your system.
   By default, `Liberation Mono`.
 - `font_size` – Font size (in pixels). By default, `14`.
@@ -71,6 +71,14 @@ The `gifs` list item consists of the following arguments:
 - `line_height` – Line height. By default, `1.4`.
 - `speed` – Playback speed. By default, `1`.
 - `no_loop` – Disable animation loop. By default, `false`.
+
+There are several kinds of actions that can be present in the `scenario`:
+- `enter` – Enter some string in the terminal.
+- `expect` – Wait for some string in the terminal.
+- `delay` – Overwrite the `keystroke_delay` argument. **Note**: the overwriting happens globally, therefore if you need 
+  to change this argument for some part of the scenario, don't forget to revert to the default value.
+- `wait` – Overwrite the `action_delay` argument. **Note**: the overwriting happens globally, therefore if you need to 
+  change this argument for some part of the scenario, don't forget to revert to the default value.
 
 Examples of config files you can see in the [`examples`](examples) folder.
 
