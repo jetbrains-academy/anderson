@@ -1,0 +1,31 @@
+gif_config:
+  common:
+    font_size: 32
+
+  gifs:
+    - name: 'dark'
+      theme: 'monokai'
+    - name: 'light'
+      theme: 'solarized_light'
+
+scenario:
+  # Wait for the first message and wait 1.5 seconds to read the message
+  - expect: \n
+  - wait: 1500
+
+  # Enter "Ilya"
+  - enter: "Ilya"
+
+  # Wait for the second message and wait 1.5 seconds to read the message
+  - expect: \n
+  - wait: 1500
+
+  # Enter "21" sloooooowly
+  - delay: 2000
+  - enter: "21"
+
+  # Restore default delay
+  - delay: 50
+
+  # Wait for the last message
+  - expect: \n
