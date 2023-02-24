@@ -4,7 +4,7 @@ from typing import List
 
 from setuptools import find_packages, setup
 
-VERSION = '1.0.0'
+VERSION = '0.1.0'
 
 
 REQUIREMENTS_FILE = Path(__file__).parent / 'requirements.txt'
