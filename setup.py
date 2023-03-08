@@ -11,7 +11,7 @@ from setuptools import find_packages, setup
 from anderson.utils import AGG_PATH
 
 VERSION = '0.2.0'
-AGG_VERSION = '0.1.3'
+AGG_VERSION = '1.3.0'
 
 REQUIREMENTS_FILE = Path(__file__).parent / 'requirements.txt'
 
