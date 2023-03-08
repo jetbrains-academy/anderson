@@ -5,7 +5,7 @@ from pathlib import Path
 from platform import system
 from typing import List
 
-AGG_PATH = Path(__file__).parent / 'bin' / 'agg.exe' if system() == 'Windows' else 'agg'
+AGG_PATH = Path(__file__).parent / 'bin' / ('agg.exe' if system() == 'Windows' else 'agg')
 
 logger = logging.getLogger(__name__)
 
