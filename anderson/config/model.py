@@ -1,7 +1,7 @@
 import re
 from typing import Any, List
 
-from pydantic import BaseModel, PositiveFloat, PositiveInt, conlist, validator
+from pydantic import BaseModel, NonNegativeInt, PositiveFloat, PositiveInt, conlist, validator
 
 from anderson.config.action import ActionType
 from anderson.config.choices import FontFamily, Theme
@@ -13,9 +13,9 @@ class TerminalConfig(BaseModel):
 
 
 class InteractionConfig(BaseModel):
-    keystroke_delay: PositiveInt = 150
-    keystroke_std: PositiveInt = 60
-    action_delay: PositiveInt = 80
+    keystroke_delay: NonNegativeInt = 150
+    keystroke_std: NonNegativeInt = 60
+    action_delay: NonNegativeInt = 80
 
 
 class Gif(BaseModel):
