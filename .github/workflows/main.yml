@@ -26,7 +26,7 @@ jobs:
         run: |
           virtualenv ./.venv
           source ./.venv/bin/activate
-          pip install -r ./requirements.txt -r ./requirements-code-style.txt
+          pip install -r ./requirements.txt -r ./requirements-code-style.txt -r ./requirements-test.txt
 
 
   code-style:
@@ -57,14 +57,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
-      - name: Install anderson
-        run: pip install .
-        
-      - name: Check anderson is working
-        run: anderson "python3 ./examples/python_bot/main.py" ./examples/python_bot/out/ ./examples/python_bot/config.yaml --debug
-      
-      - uses: actions/upload-artifact@v3
+
+      - name: Cache Python virtual environment
+        id: pip-cache
+        uses: actions/cache@v3
         with:
-          name: python-bot-gifs
-          path: ./examples/python_bot/out/
+          path: ./.venv
+          key: ${{ runner.os }}-pip-cache-${{ hashFiles('./requirements*.txt') }}
+
+      - name: Install anderson
+        run: |
+          source ./.venv/bin/activate
+          pip install .
+        
+      - name: Test anderson
+        run: |
+          source ./.venv/bin/activate
+          pytest . -vv
