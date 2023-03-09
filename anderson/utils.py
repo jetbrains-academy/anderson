@@ -5,7 +5,8 @@ from pathlib import Path
 from platform import system
 from typing import List
 
-AGG_PATH = Path(__file__).parent / 'bin' / ('agg.exe' if system() == 'Windows' else 'agg')
+PROJECT_ROOT = Path(__file__).parents[1]
+AGG_PATH = PROJECT_ROOT / 'anderson' / 'bin' / ('agg.exe' if system() == 'Windows' else 'agg')  # noqa: WPS509
 
 logger = logging.getLogger(__name__)
 
