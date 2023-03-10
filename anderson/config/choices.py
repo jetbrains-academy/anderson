@@ -119,14 +119,3 @@ class Theme(Enum):
         }
 
         return theme_to_hex[self]
-
-
-class FontFamily(str, Enum):  # noqa: WPS600
-    # Consistent with https://github.com/asciinema/agg/blob/4b605b6eb670bfaba2cfda1cb258cfbfdfc1f2d4/src/main.rs#L136
-    JETBRAINS_MONO = 'JetBrains Mono'
-    FIRA_CODE = 'Fira Code'
-    SF_MONO = 'SF Mono'
-    MENLO = 'Menlo'
-    CONSOLAS = 'Consolas'
-    DEJAVU_SANS_MONO = 'DejaVu Sans Mono'
-    LIBERATION_MONO = 'Liberation Mono'
