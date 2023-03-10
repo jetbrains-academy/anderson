@@ -30,9 +30,9 @@ class Gif(BaseModel):
     no_loop: bool = False
 
     @validator('font_family', pre=True)
-    def check_font_family_list(cls, value: Any) -> Any:
+    def check_font_family_list(cls, value: Any) -> Any:  # noqa: N805
         if isinstance(value, list) and not all(isinstance(elem, str) for elem in value):
-            raise ValueError(f'the list must contain only strings')
+            raise ValueError('the list must contain only strings')
 
         return value
 
