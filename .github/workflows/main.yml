@@ -20,7 +20,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4.5.0
         with:
-          python-version: $PYTHON_VERSION
+          python-version: ${{ PYTHON_VERSION }}
 
       - name: Cache Python virtual environment
         id: pip-cache
@@ -81,7 +81,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4.5.0
         with:
-          python-version: $PYTHON_VERSION
+          python-version: ${{ PYTHON_VERSION }}
 
       - name: Cache Python virtual environment
         id: pip-cache
