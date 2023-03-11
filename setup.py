@@ -24,10 +24,7 @@ def get_requires() -> List[str]:
 def get_agg_bin_name() -> Optional[str]:  # noqa: WPS231
     agg_bin_name = None
 
-    if system() == 'Windows':
-        agg_bin_name = 'agg-x86_64-pc-windows-msvc.exe'
-
-    elif system() == 'Darwin':
+    if system() == 'Darwin':
         if machine() in {'arm64', 'aarch64_be', 'aarch64', 'armv8b', 'armv8l'}:
             agg_bin_name = 'agg-aarch64-apple-darwin'
         elif machine() in {'x86_64', 'x64'}:
@@ -84,7 +81,6 @@ setup(
         'Intended Audience :: Education',
         'Operating System :: POSIX :: Linux',
         'Operating System :: MacOS',
-        'Operating System :: Microsoft :: Windows',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3 :: Only',
         'Programming Language :: Python :: 3.8',

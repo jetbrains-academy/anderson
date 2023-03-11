@@ -2,11 +2,10 @@ import logging
 import shlex
 import subprocess
 from pathlib import Path
-from platform import system
 from typing import List
 
 PROJECT_ROOT = Path(__file__).parents[1]
-AGG_PATH = PROJECT_ROOT / 'anderson' / 'bin' / ('agg.exe' if system() == 'Windows' else 'agg')  # noqa: WPS509
+AGG_PATH = PROJECT_ROOT / 'anderson' / 'bin' / 'agg'
 
 logger = logging.getLogger(__name__)
 
