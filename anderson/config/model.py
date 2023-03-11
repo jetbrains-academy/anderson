@@ -21,8 +21,7 @@ class InteractionConfig(BaseModel):
 class Gif(BaseModel):
     name: str
     theme: List[str] = Theme.DRACULA.to_hex()
-    # TODO: Change README
-    font_family: str = 'JetBrains Mono,Liberation Mono,Andale Mono'  # TODO: Fix the default font for MacOS
+    font_family: str = 'JetBrains Mono,Liberation Mono,Andale Mono'
     font_size: PositiveInt = 14
     fps_cap: PositiveInt = 30
     line_height: PositiveFloat = 1.4
