@@ -4,8 +4,8 @@ import subprocess
 from pathlib import Path
 from typing import List
 
-
-AGG_PATH = Path(__file__).parent / 'bin' / 'agg'
+PROJECT_ROOT = Path(__file__).parents[1]
+AGG_PATH = PROJECT_ROOT / 'anderson' / 'bin' / 'agg'
 
 logger = logging.getLogger(__name__)
 

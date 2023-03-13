@@ -1,6 +1,7 @@
 gif_config:
   common:
     font_size: 32
+    font_family: JetBrains Mono
 
   gifs:
     - name: 'dark'

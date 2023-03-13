@@ -1,10 +1,10 @@
 import re
 from typing import Any, List
 
-from pydantic import BaseModel, PositiveFloat, PositiveInt, conlist, validator
+from pydantic import BaseModel, NonNegativeInt, PositiveFloat, PositiveInt, conlist, validator
 
 from anderson.config.action import ActionType
-from anderson.config.choices import FontFamily, Theme
+from anderson.config.choices import Theme
 
 
 class TerminalConfig(BaseModel):
@@ -13,20 +13,34 @@ class TerminalConfig(BaseModel):
 
 
 class InteractionConfig(BaseModel):
-    keystroke_delay: PositiveInt = 150
-    keystroke_std: PositiveInt = 60
-    action_delay: PositiveInt = 80
+    keystroke_delay: NonNegativeInt = 150
+    keystroke_std: NonNegativeInt = 60
+    action_delay: NonNegativeInt = 80
 
 
 class Gif(BaseModel):
     name: str
     theme: List[str] = Theme.DRACULA.to_hex()
-    font_family: FontFamily = FontFamily.LIBERATION_MONO
+    font_family: str = 'JetBrains Mono,Liberation Mono,Andale Mono'
     font_size: PositiveInt = 14
     fps_cap: PositiveInt = 30
     line_height: PositiveFloat = 1.4
     speed: PositiveFloat = 1.0
     no_loop: bool = False
+
+    @validator('font_family', pre=True)
+    def check_font_family_list(cls, value: Any) -> Any:  # noqa: N805
+        if isinstance(value, list) and not all(isinstance(elem, str) for elem in value):
+            raise ValueError('the list must contain only strings')
+
+        return value
+
+    @validator('font_family', pre=True)
+    def convert_font_family(cls, value: Any) -> Any:  # noqa: N805
+        if isinstance(value, list):
+            return ','.join(value)
+
+        return value
 
     @validator('theme', pre=True)
     def convert_string_theme_to_list(cls, value: Any) -> Any:  # noqa: N805

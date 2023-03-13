@@ -32,8 +32,11 @@ ignore=WPS100, # Found wrong module name
        E402, # Module level import not at top of file.
 
 # WPS226: Found string literal over-use
-per-file-ignores=anderson/config/choices.py:WPS226
+# WPS232: Found module cognitive complexity that is too high
+per-file-ignores=
+    anderson/config/choices.py:WPS226
+    setup.py:WPS232
 
 application-import-names=anderson
 
-exclude=.venv,venv,test,examples
+exclude=.venv,venv,test,examples,build

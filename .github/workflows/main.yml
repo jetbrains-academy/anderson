@@ -2,49 +2,63 @@ name: Python build
 
 on: [push]
 
+env:
+  JETBRAINS_MONO_VERSION: 2.304
+  PYTHON_VERSION: "3.8"
+
 jobs:
   setup:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+  
+    runs-on: ${{ matrix.os }}
+    
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install virtualenv
-        run: |
-          sudo apt update
-          sudo apt install python3-pip
-          python -m pip install virtualenv
+      - name: Setup Python
+        uses: actions/setup-python@v4.5.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Cache Python virtual environment
         id: pip-cache
         uses: actions/cache@v3
         with:
-          path: ./.venv
+          path: ./venv
           key: ${{ runner.os }}-pip-cache-${{ hashFiles('./requirements*.txt') }}
 
       - name: Install Python requirements
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: |
-          virtualenv ./.venv
-          source ./.venv/bin/activate
-          pip install -r ./requirements.txt -r ./requirements-code-style.txt
-
+          python3 -m venv venv
+          source venv/bin/activate
+          pip install -r ./requirements.txt -r ./requirements-code-style.txt -r ./requirements-test.txt
 
   code-style:
     needs: setup
+
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4.5.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Cache Python virtual environment
         id: pip-cache
         uses: actions/cache@v3
         with:
-          path: ./.venv
+          path: ./venv
           key: ${{ runner.os }}-pip-cache-${{ hashFiles('./requirements*.txt') }}
 
-      - name: Run python static code analyzers
+      - name: Run Flake8
         run: |
-          source ./.venv/bin/activate
+          source ./venv/bin/activate
           flake8 . --count --statistics --config ./.flake8
           
       - name: Run Black
@@ -54,17 +68,49 @@ jobs:
 
   test:
     needs: code-style
-    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
+
     steps:
       - uses: actions/checkout@v3
-      
-      - name: Install anderson
-        run: pip install .
-        
-      - name: Check anderson is working
-        run: anderson "python3 ./examples/python_bot/main.py" ./examples/python_bot/out/ ./examples/python_bot/config.yaml --debug
-      
-      - uses: actions/upload-artifact@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4.5.0
         with:
-          name: python-bot-gifs
-          path: ./examples/python_bot/out/
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Cache Python virtual environment
+        id: pip-cache
+        uses: actions/cache@v3
+        with:
+          path: ./venv
+          key: ${{ runner.os }}-pip-cache-${{ hashFiles('./requirements*.txt') }}
+
+      - name: Install anderson
+        run: |
+          source ./venv/bin/activate
+          pip install .
+
+      - name: Download JetBrains Mono
+        run: |
+          curl -sLO https://github.com/JetBrains/JetBrainsMono/releases/download/v$JETBRAINS_MONO_VERSION/JetBrainsMono-$JETBRAINS_MONO_VERSION.zip
+          unzip JetBrainsMono-$JETBRAINS_MONO_VERSION.zip
+      
+      - name: Install JetBrains Mono on MacOS
+        if: matrix.os == 'macos-latest'
+        run: cp fonts/ttf/JetBrainsMono-Regular.ttf /Library/Fonts/
+        
+      - name: Install JetBrains Mono on Linux
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo cp fonts/ttf/JetBrainsMono-Regular.ttf /usr/local/share/fonts/
+          fc-cache -f -v
+
+      - name: Test anderson
+        run: |
+          source ./venv/bin/activate
+          pytest . -vv

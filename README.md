@@ -63,9 +63,9 @@ The `gifs` list item consists of the following arguments:
   The names of the available themes are listed in the `Theme` enum-class located [here](anderson/config/choices.py).
   More information about the list of colors can be found [here](https://github.com/asciinema/agg#color-themes).
   By default, `dracula`.
-- `font_family` – Name of the font family. The available values are given in the `FontFamily` enum-class located 
-  [here](anderson/config/choices.py). **Note**: the selected font family must be installed on your system.
-  By default, `Liberation Mono`.
+- `font_family` – Names of font families. It can either be a string of names separated by a comma, or a list of strings.
+  By default, `JetBrains Mono,Liberation Mono,Andale Mono`.
+  **Note**: if some font family is not installed on the system, the next one after it will be used to create the GIF.
 - `font_size` – Font size (in pixels). By default, `14`.
 - `fps_cap` – FPS cap. By default, `30`.
 - `line_height` – Line height. By default, `1.4`.
