@@ -9,6 +9,9 @@ class Theme(Enum):
     MONOKAY = 'monokai'
     SOLARIZED_DARK = 'solarized_dark'
     SOLARIZED_LIGHT = 'solarized_light'
+    # Custom themes
+    JETBRAINS_DARK = 'jetbrains_dark'
+    JETBRAINS_LIGHT = 'jetbrains_light'
 
     @classmethod
     def values(cls) -> List[str]:
@@ -99,6 +102,47 @@ class Theme(Enum):
             self.SOLARIZED_LIGHT: [
                 'fdf6e3',
                 '657b83',
+                '073642',
+                'dc322f',
+                '859900',
+                'b58900',
+                '268bd2',
+                'd33682',
+                '2aa198',
+                'eee8d5',
+                '002b36',
+                'cb4b16',
+                '586e75',
+                '657c83',
+                '839496',
+                '6c71c4',
+                '93a1a1',
+                'fdf6e3',
+            ],
+            # TODO: Fix a color palette for JetBrains Dark and JetBrains Light
+            self.JETBRAINS_DARK: [
+                '3c3f41',
+                'bbbbbb',
+                '073642',
+                'dc322f',
+                '859900',
+                'b58900',
+                '268bd2',
+                'd33682',
+                '2aa198',
+                'eee8d5',
+                '002b36',
+                'cb4b16',
+                '586e75',
+                '657b83',
+                '839496',
+                '6c71c4',
+                '93a1a1',
+                'fdf6e3',
+            ],
+            self.JETBRAINS_LIGHT: [
+                'fafafa',
+                '000000',
                 '073642',
                 'dc322f',
                 '859900',
