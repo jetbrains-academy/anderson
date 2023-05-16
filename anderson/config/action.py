@@ -27,7 +27,7 @@ class WriteAction(Action):
 
 
 class ExpectAction(Action):
-    """Action that waits for some symbols."""
+    """Action that expects some symbols to be printed."""
 
     expect: str
 
@@ -53,4 +53,13 @@ class DelayAction(Action):
         return f'#$ delay {self.delay}'
 
 
-ActionType = Union[EnterAction, WaitAction, ExpectAction, DelayAction]
+class ControlAction(Action):
+    """Action that sends control character."""
+
+    ctrl: str
+
+    def to_bash_command(self) -> str:
+        return f'#$ sendcontrol {self.ctrl}'
+
+
+ActionType = Union[WriteAction, WaitAction, ExpectAction, DelayAction, ControlAction]
