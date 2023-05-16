@@ -17,13 +17,13 @@ class Action(BaseModel, ABC):
         raise NotImplementedError
 
 
-class EnterAction(Action):
-    """Action that enters some symbols."""
+class WriteAction(Action):
+    """Action that writes some symbols."""
 
-    enter: str
+    write: str
 
     def to_bash_command(self) -> str:
-        return self.enter
+        return self.write
 
 
 class ExpectAction(Action):
