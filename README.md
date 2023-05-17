@@ -73,7 +73,10 @@ The `gifs` list item consists of the following arguments:
 - `no_loop` – Disable animation loop. By default, `false`.
 
 There are several kinds of actions that can be present in the `scenario`:
-- `write` – Write some string in the terminal.
+- `write` – Write some string in the terminal and press enter.
+- `send` – Write some string in the terminal (without pressing enter).
+- `press` -- Press some character.
+- `ctrl` -- Press Ctrl + some character.
 - `expect` – Wait for some string in the terminal.
 - `delay` – Overwrite the `keystroke_delay` argument. **Note**: the overwriting happens globally, therefore if you need 
   to change this argument for some part of the scenario, don't forget to revert to the default value.

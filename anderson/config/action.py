@@ -18,12 +18,21 @@ class Action(BaseModel, ABC):
 
 
 class WriteAction(Action):
-    """Action that writes some symbols."""
+    """Action that writes some symbols and presses enter."""
 
     write: str
 
     def to_bash_command(self) -> str:
         return self.write
+
+
+class SendAction(Action):
+    """Action that writes some symbols (without pressing enter)."""
+
+    send: str
+
+    def to_bash_command(self) -> str:
+        return f'#$ send {self.send}'
 
 
 class ExpectAction(Action):
@@ -62,4 +71,13 @@ class ControlAction(Action):
         return f'#$ sendcontrol {self.ctrl}'
 
 
-ActionType = Union[WriteAction, WaitAction, ExpectAction, DelayAction, ControlAction]
+class PressAction(Action):
+    """Action that press some key."""
+
+    press: str
+
+    def to_bash_command(self) -> str:
+        return f'#$ sendcharacter {self.press}'
+
+
+ActionType = Union[WriteAction, WaitAction, ExpectAction, DelayAction, ControlAction, SendAction, PressAction]
