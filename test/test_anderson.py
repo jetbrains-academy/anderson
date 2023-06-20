@@ -3,7 +3,7 @@ from pathlib import Path
 from anderson.utils import run_in_subprocess
 from test import EXAMPLES_FOLDER
 from test.utils import LocalCommandBuilder
-from tempfile import TemporaryDirectory
+from tempfile import TemporaryDirectory, gettempdir
 import pytest
 from PIL import Image
 from PIL.ImageSequence import Iterator
@@ -14,7 +14,12 @@ GIF_GENERATION_TEST_DATA = [
         f'python3 {EXAMPLES_FOLDER / "python_bot" / "main.py"}',
         EXAMPLES_FOLDER / 'python_bot' / 'config.yaml',
         EXAMPLES_FOLDER / 'python_bot' / 'gifs',
-    )
+    ),
+    (
+        f'kotlinc {EXAMPLES_FOLDER / "kotlin_calculator" / "Main.kt"} -include-runtime -d {gettempdir()}/Main.jar && java -jar {gettempdir()}/Main.jar',
+        EXAMPLES_FOLDER / 'kotlin_calculator' / 'config.yaml',
+        EXAMPLES_FOLDER / 'kotlin_calculator' / 'gifs',
+    ),
 ]
 
 
