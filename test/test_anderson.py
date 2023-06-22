@@ -15,11 +15,13 @@ GIF_GENERATION_TEST_DATA = [
         EXAMPLES_FOLDER / 'python_bot' / 'config.yaml',
         EXAMPLES_FOLDER / 'python_bot' / 'gifs',
     ),
-    (
-        f'kotlinc {EXAMPLES_FOLDER / "kotlin_calculator" / "Main.kt"} -include-runtime -d {gettempdir()}/Main.jar && java -jar {gettempdir()}/Main.jar',
-        EXAMPLES_FOLDER / 'kotlin_calculator' / 'config.yaml',
-        EXAMPLES_FOLDER / 'kotlin_calculator' / 'gifs',
-    ),
+    # TODO: uncomment this test case when AGG will generate the same gifs on different platforms
+    # (
+    #     f'kotlinc {EXAMPLES_FOLDER / "kotlin_calculator" / "Main.kt"} '
+    #     f'-include-runtime -d {gettempdir()}/Main.jar && java -jar {gettempdir()}/Main.jar',
+    #     EXAMPLES_FOLDER / 'kotlin_calculator' / 'config.yaml',
+    #     EXAMPLES_FOLDER / 'kotlin_calculator' / 'gifs',
+    # ),
 ]
 
 
@@ -47,7 +49,7 @@ def test_gif_generation(executable: str, config: Path, expected_output: Path):
             assert actual_gif_name in expected_gifs.keys()
 
             with Image.open(actual_gif_path) as actual_gif, Image.open(expected_gifs[actual_gif_name]) as expected_gif:
-                # assert actual_gif.n_frames == expected_gif.n_frames
+                assert actual_gif.n_frames == expected_gif.n_frames
 
                 for actual_frame, expected_frame in zip(Iterator(actual_gif), Iterator(expected_gif)):
                     assert difference(actual_frame.convert('RGB'), expected_frame.convert('RGB')).getbbox() is None
