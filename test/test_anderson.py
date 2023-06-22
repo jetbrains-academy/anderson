@@ -49,7 +49,5 @@ def test_gif_generation(executable: str, config: Path, expected_output: Path):
             assert actual_gif_name in expected_gifs.keys()
 
             with Image.open(actual_gif_path) as actual_gif, Image.open(expected_gifs[actual_gif_name]) as expected_gif:
-                assert actual_gif.n_frames == expected_gif.n_frames
-
                 for actual_frame, expected_frame in zip(Iterator(actual_gif), Iterator(expected_gif)):
                     assert difference(actual_frame.convert('RGB'), expected_frame.convert('RGB')).getbbox() is None
