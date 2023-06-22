@@ -16,6 +16,7 @@ class InteractionConfig(BaseModel):
     keystroke_delay: NonNegativeInt = 150
     keystroke_std: NonNegativeInt = 60
     action_delay: NonNegativeInt = 80
+    timeout: NonNegativeInt = 30
 
 
 class Gif(BaseModel):
@@ -27,6 +28,7 @@ class Gif(BaseModel):
     line_height: PositiveFloat = 1.4
     speed: PositiveFloat = 1.0
     no_loop: bool = False
+    wait_before_loop: PositiveInt = 3
 
     @validator('font_family', pre=True)
     def check_font_family_list(cls, value: Any) -> Any:  # noqa: N805

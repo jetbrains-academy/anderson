@@ -18,7 +18,7 @@ pip install git+https://github.com/GirZ0n/anderson.git
 
 Run the tool with the several arguments:
 ```bash
-anderson <executable> <ouput> <config> [--debug]
+anderson <executable> <output> <config> [--debug]
 ```
 where:
 - `<executable>` – Executable to record.
@@ -49,6 +49,7 @@ The `interaction_config` contains the following arguments:
 - `keystroke_delay` – Delay between each keystroke (in milliseconds). By default, `150`.
 - `keystroke_std` – Standard deviation for the `keystroke_delay` (in milliseconds). By default, `60`.
 - `action_delay` – Delay between each action (in milliseconds). By default, `80`.
+- `timeout` – Number of seconds to wait for the `expect` action to complete.
 
 The `gif_config` contains the following fields:
 - `gifs` – List of arguments for each of the GIFs you want to generate.
@@ -71,6 +72,7 @@ The `gifs` list item consists of the following arguments:
 - `line_height` – Line height. By default, `1.4`.
 - `speed` – Playback speed. By default, `1`.
 - `no_loop` – Disable animation loop. By default, `false`.
+- `wait_before_loop` – Number of second to wait before a new loop. By default, `3`.
 
 There are several kinds of actions that can be present in the `scenario`:
 - `write` – Write some string in the terminal and press enter.

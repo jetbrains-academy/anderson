@@ -75,6 +75,8 @@ def create_gif_generation_command(cast_file: Path, output_dir: Path, gif: Gif) -
         str(gif.line_height),
         '--speed',
         str(gif.speed),
+        '--last-frame-duration',
+        str(gif.wait_before_loop),
     ]
 
     if gif.no_loop:
@@ -120,7 +122,7 @@ def main() -> int:
                 wait=interaction_config.action_delay,
                 delay=interaction_config.keystroke_delay,
                 standart_deviation=interaction_config.keystroke_std,
-                timeout=30,  # noqa: WPS432 TODO: add the timeout field to the config
+                timeout=interaction_config.timeout,
             ).execute()
 
         args.output.mkdir(parents=True, exist_ok=True)
