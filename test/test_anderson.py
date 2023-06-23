@@ -1,9 +1,10 @@
 import os
+import platform
 from pathlib import Path
 from anderson.utils import run_in_subprocess
-from test import EXAMPLES_FOLDER
+from test import ANDERSON_TEST_DATA_FOLDER, EXAMPLES_FOLDER
 from test.utils import LocalCommandBuilder
-from tempfile import TemporaryDirectory, gettempdir
+from tempfile import TemporaryDirectory
 import pytest
 from PIL import Image
 from PIL.ImageSequence import Iterator
@@ -13,7 +14,7 @@ GIF_GENERATION_TEST_DATA = [
     (
         f'python3 {EXAMPLES_FOLDER / "python_bot" / "main.py"}',
         EXAMPLES_FOLDER / 'python_bot' / 'config.yaml',
-        EXAMPLES_FOLDER / 'python_bot' / 'gifs',
+        ANDERSON_TEST_DATA_FOLDER / 'python_bot',
     ),
     # TODO: uncomment this test case when AGG will generate the same gifs on different platforms
     # (
@@ -30,6 +31,8 @@ def test_gif_generation(executable: str, config: Path, expected_output: Path):
     with TemporaryDirectory() as actual_output:
         command_builder = LocalCommandBuilder(executable, actual_output, config)
         run_in_subprocess(command_builder.build())
+
+        expected_output = expected_output / platform.system().lower()
 
         expected_gifs = {
             file: expected_output / file
@@ -49,5 +52,7 @@ def test_gif_generation(executable: str, config: Path, expected_output: Path):
             assert actual_gif_name in expected_gifs.keys()
 
             with Image.open(actual_gif_path) as actual_gif, Image.open(expected_gifs[actual_gif_name]) as expected_gif:
+                assert actual_gif.n_frames == expected_gif.n_frames
+
                 for actual_frame, expected_frame in zip(Iterator(actual_gif), Iterator(expected_gif)):
                     assert difference(actual_frame.convert('RGB'), expected_frame.convert('RGB')).getbbox() is None
