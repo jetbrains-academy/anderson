@@ -28,7 +28,7 @@ class Gif(BaseModel):
     line_height: PositiveFloat = 1.4
     speed: PositiveFloat = 1.0
     no_loop: bool = False
-    wait_before_loop: PositiveInt = 3
+    wait_before_loop: NonNegativeInt = 3
 
     @validator('font_family', pre=True)
     def check_font_family_list(cls, value: Any) -> Any:  # noqa: N805
