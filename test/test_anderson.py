@@ -20,7 +20,7 @@ GIF_GENERATION_TEST_DATA = [
         f'kotlinc {EXAMPLES_FOLDER / "kotlin_calculator" / "Main.kt"} '
         f'-include-runtime -d {gettempdir()}/Main.jar && java -jar {gettempdir()}/Main.jar',
         EXAMPLES_FOLDER / 'kotlin_calculator' / 'config.yaml',
-        EXAMPLES_FOLDER / 'kotlin_calculator' / 'gifs',
+        ANDERSON_TEST_DATA_FOLDER / 'kotlin_calculator',
     ),
 ]
 
