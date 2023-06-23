@@ -4,7 +4,7 @@ from pathlib import Path
 from anderson.utils import run_in_subprocess
 from test import ANDERSON_TEST_DATA_FOLDER, EXAMPLES_FOLDER
 from test.utils import LocalCommandBuilder
-from tempfile import TemporaryDirectory
+from tempfile import TemporaryDirectory, gettempdir
 import pytest
 from PIL import Image
 from PIL.ImageSequence import Iterator
@@ -16,13 +16,12 @@ GIF_GENERATION_TEST_DATA = [
         EXAMPLES_FOLDER / 'python_bot' / 'config.yaml',
         ANDERSON_TEST_DATA_FOLDER / 'python_bot',
     ),
-    # TODO: uncomment this test case when AGG will generate the same gifs on different platforms
-    # (
-    #     f'kotlinc {EXAMPLES_FOLDER / "kotlin_calculator" / "Main.kt"} '
-    #     f'-include-runtime -d {gettempdir()}/Main.jar && java -jar {gettempdir()}/Main.jar',
-    #     EXAMPLES_FOLDER / 'kotlin_calculator' / 'config.yaml',
-    #     EXAMPLES_FOLDER / 'kotlin_calculator' / 'gifs',
-    # ),
+    (
+        f'kotlinc {EXAMPLES_FOLDER / "kotlin_calculator" / "Main.kt"} '
+        f'-include-runtime -d {gettempdir()}/Main.jar && java -jar {gettempdir()}/Main.jar',
+        EXAMPLES_FOLDER / 'kotlin_calculator' / 'config.yaml',
+        EXAMPLES_FOLDER / 'kotlin_calculator' / 'gifs',
+    ),
 ]
 
 
