@@ -9,6 +9,7 @@ ignore=WPS100, # Found wrong module name
        WPS111, # Found too short name
        WPS115, # Found upper-case constant in a class. Disabled due to false positive results in enums.
        WPS201, # Found module with too many imports
+       WPS202, # Found too many module members
        WPS210, # Found too many local variables
        WPS221, # Found line with high Jones Complexity
        WPS237, # Found a too complex `f` string

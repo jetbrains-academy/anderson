@@ -1,0 +1,71 @@
+terminal_config:
+  rows: 45
+
+interaction_config:
+  action_delay: 1000
+
+gif_config:
+  common:
+    font_size: 32
+    font_family: JetBrains Mono
+
+  gifs:
+    - name: 'dark'
+      theme: 'monokai'
+      speed: 2
+
+    - name: 'light'
+      theme: 'solarized_light'
+      speed: 0.5
+
+scenario:
+  - expect: ": "
+  - write: abracadabra
+
+  - expect: \n
+  - write: +
+
+  - expect: ": "
+  - write: ahalai
+
+  - expect: \n
+  - write: mahalai
+
+  - expect: \n
+  - write: 69
+
+  - expect: ": "
+  - write: avada kedavra
+
+  - expect: \n
+  - write: 42
+
+  - expect: ": "
+  - write: "-"
+
+  - expect: ": "
+  - write: 69
+
+  - expect: ": "
+  - write: 42
+
+  - expect: ": "
+  - write: "*"
+
+  - expect: ": "
+  - write: 69
+
+  - expect: ": "
+  - write: 42
+
+  - expect: ": "
+  - write: /
+
+  - expect: ": "
+  - write: 69
+
+  - expect: ": "
+  - write: 42
+
+  - expect: ": "
+  - ctrl: c

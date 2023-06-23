@@ -1,3 +1,3 @@
-git+https://github.com/PierreMarchand20/asciinema_automation.git@85ee2fdfc3acaa8ce1f6323ecc19d7881416e3a6#egg=asciinema-automation
+asciinema-automation==0.1.3
 pyyaml==6.0
 pydantic==1.10.5

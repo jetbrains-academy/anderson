@@ -17,17 +17,26 @@ class Action(BaseModel, ABC):
         raise NotImplementedError
 
 
-class EnterAction(Action):
-    """Action that enters some symbols."""
+class WriteAction(Action):
+    """Action that writes some symbols and presses enter."""
 
-    enter: str
+    write: str
 
     def to_bash_command(self) -> str:
-        return self.enter
+        return self.write
+
+
+class SendAction(Action):
+    """Action that writes some symbols (without pressing enter)."""
+
+    send: str
+
+    def to_bash_command(self) -> str:
+        return f'#$ send {self.send}'
 
 
 class ExpectAction(Action):
-    """Action that waits for some symbols."""
+    """Action that expects some symbols to be printed."""
 
     expect: str
 
@@ -53,4 +62,22 @@ class DelayAction(Action):
         return f'#$ delay {self.delay}'
 
 
-ActionType = Union[EnterAction, WaitAction, ExpectAction, DelayAction]
+class ControlAction(Action):
+    """Action that sends control character."""
+
+    ctrl: str
+
+    def to_bash_command(self) -> str:
+        return f'#$ sendcontrol {self.ctrl}'
+
+
+class PressAction(Action):
+    """Action that press some key."""
+
+    press: str
+
+    def to_bash_command(self) -> str:
+        return f'#$ sendcharacter {self.press}'
+
+
+ActionType = Union[WriteAction, WaitAction, ExpectAction, DelayAction, ControlAction, SendAction, PressAction]

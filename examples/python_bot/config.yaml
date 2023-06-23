@@ -14,16 +14,16 @@ scenario:
   - expect: \n
   - wait: 1500
 
-  # Enter "Ilya"
-  - enter: "Ilya"
+  # Write "Ilya"
+  - write: "Ilya"
 
   # Wait for the second message and wait 1.5 seconds to read the message
   - expect: \n
   - wait: 1500
 
-  # Enter "21" sloooooowly
+  # Write "21" sloooooowly
   - delay: 2000
-  - enter: "21"
+  - write: "21"
 
   # Restore default delay
   - delay: 50

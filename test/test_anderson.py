@@ -1,9 +1,10 @@
 import os
+import platform
 from pathlib import Path
 from anderson.utils import run_in_subprocess
-from test import EXAMPLES_FOLDER
+from test import ANDERSON_TEST_DATA_FOLDER, EXAMPLES_FOLDER
 from test.utils import LocalCommandBuilder
-from tempfile import TemporaryDirectory
+from tempfile import TemporaryDirectory, gettempdir
 import pytest
 from PIL import Image
 from PIL.ImageSequence import Iterator
@@ -13,8 +14,15 @@ GIF_GENERATION_TEST_DATA = [
     (
         f'python3 {EXAMPLES_FOLDER / "python_bot" / "main.py"}',
         EXAMPLES_FOLDER / 'python_bot' / 'config.yaml',
-        EXAMPLES_FOLDER / 'python_bot' / 'gifs',
-    )
+        ANDERSON_TEST_DATA_FOLDER / 'python_bot',
+    ),
+    # TODO: why this test doesn't work?
+    # (
+    #     f'kotlinc {EXAMPLES_FOLDER / "kotlin_calculator" / "Main.kt"} '
+    #     f'-include-runtime -d {gettempdir()}/Main.jar && java -jar {gettempdir()}/Main.jar',
+    #     EXAMPLES_FOLDER / 'kotlin_calculator' / 'config.yaml',
+    #     ANDERSON_TEST_DATA_FOLDER / 'kotlin_calculator',
+    # ),
 ]
 
 
@@ -23,6 +31,8 @@ def test_gif_generation(executable: str, config: Path, expected_output: Path):
     with TemporaryDirectory() as actual_output:
         command_builder = LocalCommandBuilder(executable, actual_output, config)
         run_in_subprocess(command_builder.build())
+
+        expected_output = expected_output / platform.system().lower()
 
         expected_gifs = {
             file: expected_output / file
