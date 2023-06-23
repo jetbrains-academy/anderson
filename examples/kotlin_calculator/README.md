@@ -14,6 +14,6 @@ You can also change the font in the config to any other font that is installed i
 
 In the `gifs` folder you will get the following gifs:
 
-| `light.gif`                    | `dark.gif`                   |
-|--------------------------------|------------------------------|
-| ![light.gif](gifs%2Flight.gif) | ![dark.gif](gifs%2Fdark.gif) |
+| `light.gif`                                                                   | `dark.gif`                                                                  |
+|-------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
+| ![light.gif](../../test/resources/anderson/kotlin_calculator/linux/light.gif) | ![dark.gif](../../test/resources/anderson/kotlin_calculator/linux/dark.gif) |

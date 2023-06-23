@@ -13,6 +13,6 @@ You can also change the font in the config to any other font that is installed i
 
 In the `gifs` folder you will get the following gifs:
 - `light.gif`: 
-  ![light.gif](gifs%2Flight.gif)
+  ![light.gif](../../test/resources/anderson/python_bot/linux/light.gif)
 - `dark.gif`:
-  ![dark.gif](gifs%2Fdark.gif)
+  ![dark.gif](../../test/resources/anderson/python_bot/linux/dark.gif)
