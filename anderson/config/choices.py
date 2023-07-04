@@ -121,8 +121,8 @@ class Theme(Enum):
             ],
             # TODO: Fix a color palette for JetBrains Dark and JetBrains Light
             self.JETBRAINS_DARK: [
-                '3c3f41',
-                'bbbbbb',
+                '2c2c2c',
+                'abb8c4',
                 '073642',
                 'dc322f',
                 '859900',
@@ -141,8 +141,8 @@ class Theme(Enum):
                 'fdf6e3',
             ],
             self.JETBRAINS_LIGHT: [
-                'fafafa',
-                '000000',
+                'f2f2f2',
+                '080808',
                 '073642',
                 'dc322f',
                 '859900',
