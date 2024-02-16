@@ -1,0 +1,44 @@
+[tool.poetry]
+name = "anderson"
+version = "0.3.1"
+description = "A tool for automatically recording a terminal session into animated GIF files"
+license = "Apache-2.0"
+authors = ["Ilya Vlasov <ilya.vlasov@jetbrains.com>"]
+readme = "README.md"
+repository = "https://github.com/jetbrains-academy/anderson"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "License :: OSI Approved :: Apache Software License",
+    "Intended Audience :: Education",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Topic:: Utilities",
+]
+include = [{ path = "anderson/bin/*" }]
+
+[tool.poetry.dependencies]
+python = ">=3.8, <4"
+asciinema-automation = "0.1.3"
+pyyaml = "6.0"
+pydantic = "1.10.5"
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "4.0.1"
+flake8-import-order = "0.18.2"
+wemake-python-styleguide = "0.17.0"
+pytest = "7.2.2"
+pillow = "9.4.0"
+
+[tool.poetry.scripts]
+anderson = "anderson.main:main"
+
+[tool.poetry.build]
+script = "build.py"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
