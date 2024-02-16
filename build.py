@@ -8,6 +8,7 @@ from anderson.utils import AGG_PATH
 
 AGG_VERSION = '1.4.2'
 
+
 def get_agg_bin_name() -> Optional[str]:  # noqa: WPS231
     agg_bin_name = None
 
