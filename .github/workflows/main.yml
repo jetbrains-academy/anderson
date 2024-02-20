@@ -3,7 +3,7 @@ name: Python build
 on: [push]
 
 env:
-  POETRY_ENV_PATH: ~/poetry
+  POETRY_HOME: ~/poetry
   POETRY_VERSION: 1.7.1
   JETBRAINS_MONO_VERSION: 2.304
   PYTHON_VERSION: "3.8"
@@ -28,14 +28,26 @@ jobs:
         id: poetry-cache
         uses: actions/cache@v3
         with:
-          path: ${{ env.POETRY_ENV_PATH }}
+          path: ${{ env.POETRY_HOME }}
           key: ${{ runner.os }}-poetry-cache-${{ env.POETRY_VERSION }}
 
       - name: Install Poetry
         if: steps.poetry-cache.outputs.cache-hit != 'true'
         run: |
-          python3 -m venv $POETRY_ENV_PATH
-          $POETRY_ENV_PATH/bin/pip3 install poetry==$POETRY_VERSION
+          python3 -m venv $POETRY_HOME
+          $POETRY_HOME/bin/pip3 install poetry==$POETRY_VERSION
+
+      - name: Cache virtual environment
+        id: pip-cache
+        uses: actions/cache@v3
+        with:
+          path: ./.venv
+          key: ${{ runner.os }}-pip-cache-${{ hashFiles('./poetry.lock') }}
+
+      - name: Install requirements
+        if: steps.pip-cache.outputs.cache-hit != 'true'
+        run: |
+          $POETRY_HOME/bin/poetry install
 
   code-style:
     needs: setup
@@ -54,15 +66,20 @@ jobs:
         id: poetry-cache
         uses: actions/cache@v3
         with:
-          path: ${{ env.POETRY_ENV_PATH }}
+          path: ${{ env.POETRY_HOME }}
           key: ${{ runner.os }}-poetry-cache-${{ env.POETRY_VERSION }}
+
+      - name: Cache virtual environment
+        id: pip-cache
+        uses: actions/cache@v3
+        with:
+          path: ./.venv
+          key: ${{ runner.os }}-pip-cache-${{ hashFiles('./poetry.lock') }}
 
       - name: Run Flake8
         run: |
-          source $POETRY_ENV_PATH/bin/activate
-          poetry install
-          poetry run flake8 . --count --statistics --config ./.flake8
-          
+          $POETRY_HOME/bin/poetry run flake8 . --count --statistics --config ./.flake8
+
       - name: Run Black
         uses: psf/black@stable
         with:
@@ -89,8 +106,15 @@ jobs:
         id: poetry-cache
         uses: actions/cache@v3
         with:
-          path: ${{ env.POETRY_ENV_PATH }}
+          path: ${{ env.POETRY_HOME }}
           key: ${{ runner.os }}-poetry-cache-${{ env.POETRY_VERSION }}
+
+      - name: Cache virtual environment
+        id: pip-cache
+        uses: actions/cache@v3
+        with:
+          path: ./.venv
+          key: ${{ runner.os }}-pip-cache-${{ hashFiles('./poetry.lock') }}
 
       - name: Download JetBrains Mono
         run: |
@@ -109,6 +133,4 @@ jobs:
 
       - name: Test anderson
         run: |
-          source $POETRY_ENV_PATH/bin/activate
-          poetry install
-          poetry run pytest . -vv
+          $POETRY_HOME/bin/poetry run pytest . -vv
