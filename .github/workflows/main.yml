@@ -29,7 +29,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: $POETRY_HOME
-          key: ${{ runner.os }}-poetry-cache-$POETRY_VERSION
+          key: ${{ runner.os }}-poetry-cache-${{ env.POETRY_VERSION }}
 
       - name: Install Poetry
         if: steps.poetry-cache.outputs.cache-hit != 'true'
@@ -68,7 +68,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: $POETRY_HOME
-          key: ${{ runner.os }}-poetry-cache-$POETRY_VERSION
+          key: ${{ runner.os }}-poetry-cache-${{ env.POETRY_VERSION }}
 
       - name: Cache virtual environment
         id: pip-cache
@@ -109,7 +109,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: $POETRY_HOME
-          key: ${{ runner.os }}-poetry-cache-$POETRY_VERSION
+          key: ${{ runner.os }}-poetry-cache-${{ env.POETRY_VERSION }}
 
       - name: Cache virtual environment
         id: pip-cache
