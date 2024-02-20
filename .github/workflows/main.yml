@@ -3,6 +3,7 @@ name: Python build
 on: [push]
 
 env:
+  POETRY_ENV_PATH: ~/poetry
   POETRY_VERSION: 1.7.1
   JETBRAINS_MONO_VERSION: 2.304
   PYTHON_VERSION: "3.8"
@@ -27,14 +28,14 @@ jobs:
         id: poetry-cache
         uses: actions/cache@v3
         with:
-          path: ~/poetry
+          path: ${{ env.POETRY_ENV_PATH }}
           key: ${{ runner.os }}-poetry-cache-${{ env.POETRY_VERSION }}
 
       - name: Install Poetry
         if: steps.poetry-cache.outputs.cache-hit != 'true'
         run: |
-          python3 -m venv ~/poetry
-          ~/poetry/bin/pip3 install poetry==$POETRY_VERSION
+          python3 -m venv $POETRY_ENV_PATH
+          $POETRY_ENV_PATH/bin/pip3 install poetry==$POETRY_VERSION
 
   code-style:
     needs: setup
@@ -53,12 +54,12 @@ jobs:
         id: poetry-cache
         uses: actions/cache@v3
         with:
-          path: ~/poetry
+          path: ${{ env.POETRY_ENV_PATH }}
           key: ${{ runner.os }}-poetry-cache-${{ env.POETRY_VERSION }}
 
       - name: Run Flake8
         run: |
-          source ~/poetry/bin/activate
+          source $POETRY_ENV_PATH/bin/activate
           poetry install
           poetry run flake8 . --count --statistics --config ./.flake8
           
@@ -88,7 +89,7 @@ jobs:
         id: poetry-cache
         uses: actions/cache@v3
         with:
-          path: ~/poetry
+          path: ${{ env.POETRY_ENV_PATH }}
           key: ${{ runner.os }}-poetry-cache-${{ env.POETRY_VERSION }}
 
       - name: Download JetBrains Mono
@@ -108,6 +109,6 @@ jobs:
 
       - name: Test anderson
         run: |
-          source ~/poetry/bin/activate
+          source $POETRY_ENV_PATH/bin/activate
           poetry install
           poetry run pytest . -vv
