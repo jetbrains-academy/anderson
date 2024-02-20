@@ -3,7 +3,7 @@ name: Python build
 on: [push]
 
 env:
-  POETRY_HOME: /opt/poetry
+  POETRY_HOME: ~/poetry
   POETRY_VERSION: 1.7.1
   JETBRAINS_MONO_VERSION: 2.304
   PYTHON_VERSION: "3.8"
