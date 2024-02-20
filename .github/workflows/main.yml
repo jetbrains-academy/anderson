@@ -59,6 +59,7 @@ jobs:
       - name: Run Flake8
         run: |
           source ~/poetry/bin/activate
+          poetry install
           poetry run flake8 . --count --statistics --config ./.flake8
           
       - name: Run Black
@@ -108,4 +109,5 @@ jobs:
       - name: Test anderson
         run: |
           source ~/poetry/bin/activate
+          poetry install
           poetry run pytest . -vv
