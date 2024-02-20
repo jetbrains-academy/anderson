@@ -34,7 +34,7 @@ jobs:
       - name: Install Poetry
         if: steps.poetry-cache.outputs.cache-hit != 'true'
         run: |
-          python3 -m venv $POETRY_HOME
+          python3 -m venv ~/poetry
           $POETRY_HOME/bin/pip3 install poetry==$POETRY_VERSION
 
       - name: Cache virtual environment
