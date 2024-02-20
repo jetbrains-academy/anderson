@@ -40,7 +40,7 @@ jobs:
         id: pip-cache
         uses: actions/cache@v3
         with:
-          path: ./venv
+          path: ./.venv
           key: ${{ runner.os }}-pip-cache-${{ hashFiles('./poetry.lock') }}
 
       - name: Install requirements
@@ -73,7 +73,7 @@ jobs:
         id: pip-cache
         uses: actions/cache@v3
         with:
-          path: ./venv
+          path: ./.venv
           key: ${{ runner.os }}-pip-cache-${{ hashFiles('./poetry.lock') }}
 
       - name: Run Flake8
@@ -114,7 +114,7 @@ jobs:
         id: pip-cache
         uses: actions/cache@v3
         with:
-          path: ./venv
+          path: ./.venv
           key: ${{ runner.os }}-pip-cache-${{ hashFiles('./poetry.lock') }}
 
       - name: Download JetBrains Mono
