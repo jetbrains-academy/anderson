@@ -3,6 +3,8 @@ name: Python build
 on: [push]
 
 env:
+  POETRY_HOME: /opt/poetry
+  POETRY_VERSION: 1.7.1
   JETBRAINS_MONO_VERSION: 2.304
   PYTHON_VERSION: "3.8"
 
@@ -22,19 +24,31 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Cache Python virtual environment
+      - name: Cache Poetry
+        id: poetry-cache
+        uses: actions/cache@v3
+        with:
+          path: $POETRY_HOME
+          key: ${{ runner.os }}-poetry-cache-$POETRY_VERSION
+
+      - name: Install Poetry
+        if: steps.poetry-cache.outputs.cache-hit != 'true'
+        run: |
+          python3 -m venv $POETRY_HOME
+          $POETRY_HOME/bin/pip3 install poetry==$POETRY_VERSION
+
+      - name: Cache virtual environment
         id: pip-cache
         uses: actions/cache@v3
         with:
           path: ./venv
-          key: ${{ runner.os }}-pip-cache-${{ hashFiles('./requirements*.txt') }}
+          key: ${{ runner.os }}-pip-cache-${{ hashFiles('./poetry.lock') }}
 
-      - name: Install Python requirements
+      - name: Install requirements
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: |
-          python3 -m venv venv
-          source venv/bin/activate
-          pip install -r ./requirements.txt -r ./requirements-code-style.txt -r ./requirements-test.txt
+          source $POETRY_HOME/bin/activate
+          poetry install
 
   code-style:
     needs: setup
@@ -49,17 +63,24 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Cache Python virtual environment
+      - name: Cache Poetry
+        id: poetry-cache
+        uses: actions/cache@v3
+        with:
+          path: $POETRY_HOME
+          key: ${{ runner.os }}-poetry-cache-$POETRY_VERSION
+
+      - name: Cache virtual environment
         id: pip-cache
         uses: actions/cache@v3
         with:
           path: ./venv
-          key: ${{ runner.os }}-pip-cache-${{ hashFiles('./requirements*.txt') }}
+          key: ${{ runner.os }}-pip-cache-${{ hashFiles('./poetry.lock') }}
 
       - name: Run Flake8
         run: |
-          source ./venv/bin/activate
-          flake8 . --count --statistics --config ./.flake8
+          source $POETRY_HOME/bin/activate
+          poetry run flake8 . --count --statistics --config ./.flake8
           
       - name: Run Black
         uses: psf/black@stable
@@ -83,17 +104,19 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Cache Python virtual environment
+      - name: Cache Poetry
+        id: poetry-cache
+        uses: actions/cache@v3
+        with:
+          path: $POETRY_HOME
+          key: ${{ runner.os }}-poetry-cache-$POETRY_VERSION
+
+      - name: Cache virtual environment
         id: pip-cache
         uses: actions/cache@v3
         with:
           path: ./venv
-          key: ${{ runner.os }}-pip-cache-${{ hashFiles('./requirements*.txt') }}
-
-      - name: Install anderson
-        run: |
-          source ./venv/bin/activate
-          pip install .
+          key: ${{ runner.os }}-pip-cache-${{ hashFiles('./poetry.lock') }}
 
       - name: Download JetBrains Mono
         run: |
@@ -112,5 +135,5 @@ jobs:
 
       - name: Test anderson
         run: |
-          source ./venv/bin/activate
-          pytest . -vv
+          source $POETRY_HOME/bin/activate
+          poetry run pytest . -vv
