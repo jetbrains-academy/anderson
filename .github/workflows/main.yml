@@ -132,4 +132,5 @@ jobs:
 
       - name: Test anderson
         run: |
+          ~/poetry/bin/poetry install
           ~/poetry/bin/poetry run pytest . -vv
