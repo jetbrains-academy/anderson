@@ -36,19 +36,6 @@ jobs:
           python3 -m venv ~/poetry
           ~/poetry/bin/pip3 install poetry==$POETRY_VERSION
 
-      - name: Cache virtual environment
-        id: pip-cache
-        uses: actions/cache@v3
-        with:
-          path: ./.venv
-          key: ${{ runner.os }}-pip-cache-${{ hashFiles('./poetry.lock') }}
-
-      - name: Install requirements
-        if: steps.pip-cache.outputs.cache-hit != 'true'
-        run: |
-          source ~/poetry/bin/activate
-          poetry install
-
   code-style:
     needs: setup
 
@@ -68,13 +55,6 @@ jobs:
         with:
           path: ~/poetry
           key: ${{ runner.os }}-poetry-cache-${{ env.POETRY_VERSION }}
-
-      - name: Cache virtual environment
-        id: pip-cache
-        uses: actions/cache@v3
-        with:
-          path: ./.venv
-          key: ${{ runner.os }}-pip-cache-${{ hashFiles('./poetry.lock') }}
 
       - name: Run Flake8
         run: |
@@ -109,13 +89,6 @@ jobs:
         with:
           path: ~/poetry
           key: ${{ runner.os }}-poetry-cache-${{ env.POETRY_VERSION }}
-
-      - name: Cache virtual environment
-        id: pip-cache
-        uses: actions/cache@v3
-        with:
-          path: ./.venv
-          key: ${{ runner.os }}-pip-cache-${{ hashFiles('./poetry.lock') }}
 
       - name: Download JetBrains Mono
         run: |
