@@ -77,7 +77,7 @@ jobs:
 
       - name: Run Flake8
         run: |
-          $POETRY_HOME/bin/poetry run flake8 . --count --statistics --config ./.flake8
+          ~/poetry/bin/poetry run flake8 . --count --statistics --config ./.flake8
 
       - name: Run Black
         uses: psf/black@stable
@@ -132,4 +132,4 @@ jobs:
 
       - name: Test anderson
         run: |
-          $POETRY_HOME/bin/poetry run pytest . -vv
+          ~/poetry/bin/poetry run pytest . -vv
