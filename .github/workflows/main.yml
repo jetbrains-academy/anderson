@@ -3,7 +3,6 @@ name: Python build
 on: [push]
 
 env:
-  POETRY_HOME: ~/poetry
   POETRY_VERSION: 1.7.1
   JETBRAINS_MONO_VERSION: 2.304
   PYTHON_VERSION: "3.8"
@@ -35,7 +34,7 @@ jobs:
         if: steps.poetry-cache.outputs.cache-hit != 'true'
         run: |
           python3 -m venv ~/poetry
-          $POETRY_HOME/bin/pip3 install poetry==$POETRY_VERSION
+          ~poetry/bin/pip3 install poetry==$POETRY_VERSION
 
       - name: Cache virtual environment
         id: pip-cache
@@ -47,7 +46,7 @@ jobs:
       - name: Install requirements
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: |
-          $POETRY_HOME/bin/poetry install
+          ~/poetry/bin/poetry install
 
   code-style:
     needs: setup
