@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "anderson"
-version = "0.3.1"
+version = "0.3.2"
 description = "A tool for automatically recording a terminal session into animated GIF files"
 license = "Apache-2.0"
 authors = ["Ilya Vlasov <ilya.vlasov@jetbrains.com>"]
