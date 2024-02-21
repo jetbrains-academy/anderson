@@ -18,16 +18,16 @@ jobs:
     name: Setup files on ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v4.5.0
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Cache Poetry
         id: poetry-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/poetry
           key: ${{ runner.os }}-poetry-cache-${{ env.POETRY_VERSION }}
@@ -40,7 +40,7 @@ jobs:
 
       - name: Cache virtual environment
         id: pip-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ./.venv
           key: ${{ runner.os }}-pip-cache-${{ hashFiles('./poetry.lock') }}
@@ -58,23 +58,23 @@ jobs:
     name: Check code style
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v4.5.0
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Cache Poetry
         id: poetry-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/poetry
           key: ${{ runner.os }}-poetry-cache-${{ env.POETRY_VERSION }}
 
       - name: Cache virtual environment
         id: pip-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ./.venv
           key: ${{ runner.os }}-pip-cache-${{ hashFiles('./poetry.lock') }}
@@ -100,23 +100,23 @@ jobs:
     name: Run tests on ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v4.5.0
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Cache Poetry
         id: poetry-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/poetry
           key: ${{ runner.os }}-poetry-cache-${{ env.POETRY_VERSION }}
 
       - name: Cache virtual environment
         id: pip-cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ./.venv
           key: ${{ runner.os }}-pip-cache-${{ hashFiles('./poetry.lock') }}
@@ -151,10 +151,10 @@ jobs:
     name: Run Anderson via pip on ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v4.5.0
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
