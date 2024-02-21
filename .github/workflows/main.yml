@@ -164,6 +164,21 @@ jobs:
           source .venv/bin/activate
           pip3 install .
 
+      - name: Download JetBrains Mono
+        run: |
+          curl -sLO https://github.com/JetBrains/JetBrainsMono/releases/download/v$JETBRAINS_MONO_VERSION/JetBrainsMono-$JETBRAINS_MONO_VERSION.zip
+          unzip JetBrainsMono-$JETBRAINS_MONO_VERSION.zip
+
+      - name: Install JetBrains Mono on MacOS
+        if: matrix.os == 'macos-latest'
+        run: cp fonts/ttf/JetBrainsMono-Regular.ttf /Library/Fonts/
+
+      - name: Install JetBrains Mono on Linux
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo cp fonts/ttf/JetBrainsMono-Regular.ttf /usr/local/share/fonts/
+          fc-cache -f -v
+
       - name: Generate Python Bot GIFs
         run: |
           source .venv/bin/activate
