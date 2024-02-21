@@ -1,4 +1,4 @@
-name: Python build
+name: Main workflow
 
 on: [push]
 
@@ -151,6 +151,13 @@ jobs:
     name: Run Anderson via pip on ${{ matrix.os }}
 
     steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4.5.0
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
       - name: Install anderson
         run: |
           python3 -m venv .venv
