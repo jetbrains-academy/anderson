@@ -130,7 +130,7 @@ def main() -> int:
             logger.info(f'Generating {gif.name}.gif')
             exit_code = run_in_subprocess(create_gif_generation_command(Path(cast_file.name), args.output, gif))
             if exit_code != 0:
-                logger.error('Can\'t generate GIF file! For more information please see the stacktrace.')
+                logger.error("Can't generate GIF file! For more information please see the stacktrace.")
                 return 1
 
 
