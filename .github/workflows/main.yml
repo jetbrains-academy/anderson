@@ -12,9 +12,11 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-  
+
     runs-on: ${{ matrix.os }}
-    
+
+    name: Setup files on ${{ matrix.os }}
+
     steps:
       - uses: actions/checkout@v3
 
@@ -52,6 +54,8 @@ jobs:
     needs: setup
 
     runs-on: ubuntu-latest
+
+    name: Check code style
 
     steps:
       - uses: actions/checkout@v3
@@ -92,6 +96,8 @@ jobs:
         os: [ubuntu-latest, macos-latest]
 
     runs-on: ${{ matrix.os }}
+
+    name: Run tests on ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v3
@@ -134,3 +140,32 @@ jobs:
         run: |
           ~/poetry/bin/poetry install
           ~/poetry/bin/poetry run pytest . -vv
+
+  pip-test:
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest ]
+
+    runs-on: ${{ matrix.os }}
+
+    name: Run Anderson via pip on ${{ matrix.os }}
+
+    steps:
+      - name: Install anderson
+        run: |
+          python3 -m venv .venv
+          source .venv/bin/activate
+          pip3 install .
+
+      - name: Generate Python Bot GIFs
+        run: |
+          source .venv/bin/activate
+          cd examples/python_bot
+          anderson "python3 main.py" out config.yaml
+
+      - name: Upload GIFs
+        uses: actions/upload-artifact@v4
+        with:
+          name: GIFs
+          path: examples/python_bot/out/
+          if-no-files-found: error
