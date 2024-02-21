@@ -22,6 +22,6 @@ def run_in_subprocess(command: List[str]) -> int:
         logger.debug(f"{command[0]}'s stdout:\n{stdout}")
 
     if stderr:
-        logger.debug(f"{command[0]}'s stderr:\n{stderr}")
+        logger.error(f"{command[0]}'s stderr:\n{stderr}")
 
     return process.returncode

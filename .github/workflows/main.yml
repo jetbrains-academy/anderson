@@ -1,8 +1,9 @@
-name: Python build
+name: Main workflow
 
 on: [push]
 
 env:
+  POETRY_VERSION: 1.7.1
   JETBRAINS_MONO_VERSION: 2.304
   PYTHON_VERSION: "3.8"
 
@@ -11,56 +12,77 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
-  
+
     runs-on: ${{ matrix.os }}
-    
+
+    name: Setup files on ${{ matrix.os }}
+
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v4.5.0
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Cache Python virtual environment
-        id: pip-cache
-        uses: actions/cache@v3
+      - name: Cache Poetry
+        id: poetry-cache
+        uses: actions/cache@v4
         with:
-          path: ./venv
-          key: ${{ runner.os }}-pip-cache-${{ hashFiles('./requirements*.txt') }}
+          path: ~/poetry
+          key: ${{ runner.os }}-poetry-cache-${{ env.POETRY_VERSION }}
 
-      - name: Install Python requirements
+      - name: Install Poetry
+        if: steps.poetry-cache.outputs.cache-hit != 'true'
+        run: |
+          python3 -m venv ~/poetry
+          ~/poetry/bin/pip3 install poetry==$POETRY_VERSION
+
+      - name: Cache virtual environment
+        id: pip-cache
+        uses: actions/cache@v4
+        with:
+          path: ./.venv
+          key: ${{ runner.os }}-pip-cache-${{ hashFiles('./poetry.lock') }}
+
+      - name: Install requirements
         if: steps.pip-cache.outputs.cache-hit != 'true'
         run: |
-          python3 -m venv venv
-          source venv/bin/activate
-          pip install -r ./requirements.txt -r ./requirements-code-style.txt -r ./requirements-test.txt
+          ~/poetry/bin/poetry install
 
   code-style:
     needs: setup
 
     runs-on: ubuntu-latest
 
+    name: Check code style
+
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v4.5.0
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Cache Python virtual environment
-        id: pip-cache
-        uses: actions/cache@v3
+      - name: Cache Poetry
+        id: poetry-cache
+        uses: actions/cache@v4
         with:
-          path: ./venv
-          key: ${{ runner.os }}-pip-cache-${{ hashFiles('./requirements*.txt') }}
+          path: ~/poetry
+          key: ${{ runner.os }}-poetry-cache-${{ env.POETRY_VERSION }}
+
+      - name: Cache virtual environment
+        id: pip-cache
+        uses: actions/cache@v4
+        with:
+          path: ./.venv
+          key: ${{ runner.os }}-pip-cache-${{ hashFiles('./poetry.lock') }}
 
       - name: Run Flake8
         run: |
-          source ./venv/bin/activate
-          flake8 . --count --statistics --config ./.flake8
-          
+          ~/poetry/bin/poetry run flake8 . --count --statistics --config ./.flake8
+
       - name: Run Black
         uses: psf/black@stable
         with:
@@ -75,25 +97,29 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
+    name: Run tests on ${{ matrix.os }}
+
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions/setup-python@v4.5.0
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      - name: Cache Python virtual environment
-        id: pip-cache
-        uses: actions/cache@v3
+      - name: Cache Poetry
+        id: poetry-cache
+        uses: actions/cache@v4
         with:
-          path: ./venv
-          key: ${{ runner.os }}-pip-cache-${{ hashFiles('./requirements*.txt') }}
+          path: ~/poetry
+          key: ${{ runner.os }}-poetry-cache-${{ env.POETRY_VERSION }}
 
-      - name: Install anderson
-        run: |
-          source ./venv/bin/activate
-          pip install .
+      - name: Cache virtual environment
+        id: pip-cache
+        uses: actions/cache@v4
+        with:
+          path: ./.venv
+          key: ${{ runner.os }}-pip-cache-${{ hashFiles('./poetry.lock') }}
 
       - name: Download JetBrains Mono
         run: |
@@ -112,5 +138,56 @@ jobs:
 
       - name: Test anderson
         run: |
-          source ./venv/bin/activate
-          pytest . -vv
+          ~/poetry/bin/poetry install
+          ~/poetry/bin/poetry run pytest . -vv
+
+  pip-test:
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest ]
+
+    runs-on: ${{ matrix.os }}
+
+    name: Run Anderson via pip on ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install anderson
+        run: |
+          python3 -m venv .venv
+          source .venv/bin/activate
+          pip3 install .
+
+      - name: Download JetBrains Mono
+        run: |
+          curl -sLO https://github.com/JetBrains/JetBrainsMono/releases/download/v$JETBRAINS_MONO_VERSION/JetBrainsMono-$JETBRAINS_MONO_VERSION.zip
+          unzip JetBrainsMono-$JETBRAINS_MONO_VERSION.zip
+
+      - name: Install JetBrains Mono on MacOS
+        if: matrix.os == 'macos-latest'
+        run: cp fonts/ttf/JetBrainsMono-Regular.ttf /Library/Fonts/
+
+      - name: Install JetBrains Mono on Linux
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo cp fonts/ttf/JetBrainsMono-Regular.ttf /usr/local/share/fonts/
+          fc-cache -f -v
+
+      - name: Generate Python Bot GIFs
+        run: |
+          source .venv/bin/activate
+          cd examples/python_bot
+          anderson "python3 main.py" out config.yaml
+
+      - name: Upload GIFs
+        uses: actions/upload-artifact@v4
+        with:
+          name: GIFs - ${{ matrix.os }}
+          path: examples/python_bot/out/
+          if-no-files-found: error

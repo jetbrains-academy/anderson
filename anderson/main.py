@@ -128,7 +128,10 @@ def main() -> int:
         args.output.mkdir(parents=True, exist_ok=True)
         for gif in gif_config.gifs:
             logger.info(f'Generating {gif.name}.gif')
-            run_in_subprocess(create_gif_generation_command(Path(cast_file.name), args.output, gif))
+            exit_code = run_in_subprocess(create_gif_generation_command(Path(cast_file.name), args.output, gif))
+            if exit_code != 0:
+                logger.error("Can't generate GIF file! For more information please see the stacktrace.")
+                return 1
 
 
 if __name__ == '__main__':

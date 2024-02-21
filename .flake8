@@ -12,6 +12,7 @@ ignore=WPS100, # Found wrong module name
        WPS202, # Found too many module members
        WPS210, # Found too many local variables
        WPS221, # Found line with high Jones Complexity
+       WPS232, # Forbid modules with average cognitive complexity that is too high
        WPS237, # Found a too complex `f` string
        WPS305, # Found `f` string
        WPS323, # Found `%` string formatting
